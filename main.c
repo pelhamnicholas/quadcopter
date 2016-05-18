@@ -240,6 +240,7 @@ int main(void) {
 		_delay_us(15);
 		PORTD &= 0xFE;
 		range_cm = microsecondsToCentimeters(pulse);
+		pulse = 0;
 		
 		strcat(outStr, " R =");
 		//itoa(range_cm, tmpStr, 10);
@@ -251,7 +252,7 @@ int main(void) {
 		LCD_DisplayString(1, (unsigned char *)outStr);
 		//PWM_set(1, ADC_read(_ADC >> 2));
 		
-		_delay_ms(100);
+		_delay_ms(500);
 	}
 
 	return(0);
