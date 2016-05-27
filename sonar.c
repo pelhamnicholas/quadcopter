@@ -1,13 +1,19 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include "sonar.h"
+#include <util/delay.h>
+
 // Assumes all sonar sensors are on PORTD
 void sonar_init(uint8_t trigger, uint8_t echo) {
   DDRD |= (1 << trigger); PORTD &= ~(1 << trigger);
+  // Not setting input PORTD pins to high avoids some errors
   DDRD &= ~(1 << echo); PORTD |= (1 << echo);
 }
 
 // Assumes all rangefinders are on PORTD
-// Taken from getPulse() in Arduino
-uint16_t get_range_ms(uint8_t trigger, uint8_t echo) {
-  uint16_t maxloops = microsecondsToClockCycles(50) / 16;
+// Taken from pulseIn() in Arduino
+uint16_t get_range_us(uint8_t trigger, uint8_t echo) {
+  uint16_t maxloops = millisecondsToClockCycles(500);// / 16;
   uint16_t numloops = 0;
   uint16_t width = 0;
 
@@ -15,7 +21,7 @@ uint16_t get_range_ms(uint8_t trigger, uint8_t echo) {
   PORTD &= ~(1 << trigger);
   _delay_us(2);
   PORTD |= (1 << trigger);
-  _delay_us(5);
+  _delay_us(5); // Maybe use a higher value?
   PORTD &= ~(1 << trigger);
 
   // Get echo pulse
@@ -24,7 +30,7 @@ uint16_t get_range_ms(uint8_t trigger, uint8_t echo) {
     if (numloops++ == maxloops)
       return -1;
   }
-  while (PIND & (1 << echo)) {
+  while (~PIND & (1 << echo)) {
     if (numloops++ == maxloops)
       return -1;
   }

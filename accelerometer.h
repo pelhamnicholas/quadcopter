@@ -1,6 +1,8 @@
 #ifndef _ACCELEROMETER_H
 #define _ACCELEROMETER_H
 
+#define F_CPU 8000000UL // 8 MHz
+
 void PWM_init(void);
 void PWM_set(uint8_t, uint8_t);
 

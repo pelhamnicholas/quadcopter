@@ -1,3 +1,6 @@
+#include <avr/io.h>
+#include "accelerometer.h"
+#include <util/delay.h>
 
 void PWM_init(void) {
   // Timer 0
