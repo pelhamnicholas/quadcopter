@@ -1,6 +1,6 @@
 # Minimal Makefile for avr-gcc
 PROJECT := quadcopter
-SOURCES := main.c io.c sonar.c accelerometer.c
+SOURCES := main.c sonar.c accelerometer.c
 CC := avr-gcc
 OBJCOPY := avr-objcopy
 MMCU := atmega1284
@@ -10,11 +10,11 @@ CFLAGS := -mmcu=$(MMCU) -Wall -Werror -O$(OPT)
 $(PROJECT).hex: $(PROJECT).out
 	$(OBJCOPY) -j .text -O ihex $(PROJECT).out $(PROJECT).hex
 
-$(PROJECT).out: $(SOURCE)
+$(PROJECT).out: $(SOURCES)
 	$(CC) $(CFLAGS) -I./ -o $(PROJECT).out $(SOURCES)
 
 program: $(PROJECT).hex
-	avrdude -p m1284 -c atmelice_pdi -e -U flash:w:$(PROJECT).hex
+	avrdude -p m1284 -c atmelice_isp -e -U flash:w:$(PROJECT).hex
 #-P /dev/usb/hiddev0
 
 clean:
