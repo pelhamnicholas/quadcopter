@@ -1,6 +1,6 @@
 # Minimal Makefile for avr-gcc
 PROJECT := quadcopter
-SOURCES := main.c sonar.c accelerometer.c
+SOURCES := main.c sonar.c accelerometer.c timer.c task.c
 CC := avr-gcc
 OBJCOPY := avr-objcopy
 MMCU := atmega1284
